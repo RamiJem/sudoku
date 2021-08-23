@@ -1,0 +1,36 @@
+.layout {
+    height: 100vh;
+    display: flex;
+    outline: none;
+    flex-direction: column;
+    align-items: center;
+}
+.timeAndSettings {
+    width: 100%;
+    align-items: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5em;
+}
+
+@media (min-width: 700px) {
+    .timeAndSettings {
+        width: 100%;
+        align-items: center;
+        padding-top: 3em;
+        display: flex;
+        flex-direction: column;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.5em;
+    }
+    .layout {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        outline: none;
+    }
+}

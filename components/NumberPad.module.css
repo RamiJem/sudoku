@@ -1,0 +1,91 @@
+.grid{
+    width: fit-content;
+    display: grid;
+    background: black;
+    grid-gap: 1px;
+    border-style: solid;
+    border-width: 1px;
+    grid-template-columns: 18vw 18vw 18vw 18vw 18vw;
+    grid-template-rows: 9vw 9vw;
+}
+.number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.x {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.solveAndCandidate {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1px;
+    width: calc(60vw+4px);
+    height: 40px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 2px;
+    background: black;
+    margin-bottom: 6px;
+}
+.selected {
+    background-color: rgb(159, 163, 194)
+}
+@media (min-width: 700px) {
+    .grid {
+        display: grid;
+        grid-template-columns:  1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-areas: "number number number"
+                             "number number number"
+                             "number number number"
+                             "x x x";
+        grid-gap: 1px;
+        width: 250px;
+        height: 250px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: black;
+        border-radius: 2px;
+        background: black;
+    }
+    .solveAndCandidate {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-gap: 1px;
+        width: 250px;
+        height: 50px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: black;
+        border-radius: 2px;
+        background: black;
+        margin-bottom: 6px;
+    }
+    .number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .number:hover {
+        cursor: pointer;
+    }
+    .x {
+        grid-area: x;
+        width: 100%;
+    }
+    .x:hover {
+        cursor: pointer;
+    }
+    /* 
+    .selected {
+        background-color: rgb(159, 163, 194);
+     } */
+}
