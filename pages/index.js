@@ -79,7 +79,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main} >
-        {dateList.map(date => <Link  href={`/${date}`}>
+        {dateList.map(date => <Link key={date} href={`/${date}`}>
             <a style={{marginBottom: "15px", fontSize: "25px"}}>{date}</a>
         </Link>)}
       </main>
