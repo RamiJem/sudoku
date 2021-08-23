@@ -21,10 +21,6 @@
     outline: none;
 } */
 
-.warning {
-    background: #faaca6cc;
-    border-color: rgba(0, 0, 0, 0.7);
-}
 
 /* NEW */
 /* @media(max-width: 700px) {
@@ -71,6 +67,10 @@
 }
 .selected {
     background-color: #fff6eb;
+}
+.warning {
+    background: #faaca6cc;
+    border-color: rgba(0, 0, 0, 0.7);
 }
 
 /* 
