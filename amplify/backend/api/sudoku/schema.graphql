@@ -1,6 +1,0 @@
-type Sudoku @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  date: String
-  puzzle: String
-  solution: String
-}
