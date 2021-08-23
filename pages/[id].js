@@ -11,7 +11,6 @@ import conflict from '../utils/conflict'
 import { useState, useEffect } from 'react'
 
 export default function Sudoku ({ sudokuProp }) {
-    console.log(sudokuProp)
     const initial = sudokuProp.puzzle
     const solution = sudokuProp.solution
     const [sudoku, setSudoku] = useState(initial.split("").map((num, index) => ({
@@ -55,7 +54,7 @@ export default function Sudoku ({ sudokuProp }) {
      }
     
     useEffect(() => {
-        console.log('handle: ', handle)
+        // console.log('handle: ', handle)
         if(!solved){
             if (handle === null) {
                 handle = setInterval(countTimer, 1000);

@@ -5,28 +5,13 @@ import styles from '../styles/Home.module.css'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-
-// import db from '../../db'
-
-// Date.prototype.ymd = function() {
-//     var mm = this.getMonth() + 1; // getMonth() is zero-based
-//     var dd = this.getDate();
-//     console.log(new Date().toISOString().slice(0, 10))
-//     return [this.getFullYear(),
-//             (mm>9 ? '' : '0') + mm,
-//             (dd>9 ? '' : '0') + dd
-//            ].join('-');
-//   };
-
  
 
 export default function Home() {
-    const [sudokus, setSudokus] = useState([])
-    // const date = new Date()
+    // const [sudokus, setSudokus] = useState([])
     const startDate = new Date(Date.UTC(2021, 0, 1))
     const endDate = new Date(Date.UTC(2021, 0, 3))
-    // const januaryFirst2021 = new Date(Date.UTC(2021, 1, 1))
-    // const januaryTen2021 = new Date(Date.UTC(2021, 1, 10))
+  
     let day =  startDate
     const dateList = []
     const converter = {'Jan' : '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
