@@ -26,33 +26,6 @@ export default function Home() {
         // Increment day
         day.setUTCDate(day.getUTCDate() + 1)
     }
-
-    console.log(dateList)
-    // console.log(date.ymd())
-    // const params = {
-    //     TableName: "Sudoku",
-    // };
-    
-    // fetchSudokus()
-    // async function fetchSudokus() {
-    //     const scanResults = [];
-    //     let items;
-    //     do{
-    //         items =  await db.scan(params).promise();
-    //         console.log(items, ' itemssss')
-    //         items.Items.forEach((item) => scanResults.push(item));
-    //         params.ExclusiveStartKey  = items.LastEvaluatedKey;
-    //     }while(typeof items.LastEvaluatedKey !== "undefined");
-    //     console.log(scanResults, 'scanresults')
-    //     const paths =  scanResults.map(sudoku => { return sudoku.date })
-    //     setSudokus(scanResults)
-    //     console.log('paths: ', scanResults)  
-    // }
-    //   const sudokuData = await DataStore.query(Sudoku)
-    //   console.log('sudokuData: ', sudokuData)
-    //   setSudokus(sudokuData)
-    // const subscription = DataStore.observe(Sudoku).subscribe(() => fetchSudokus())
-    // return () => subscription.unsubscribe()
   
 
   return (

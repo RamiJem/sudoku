@@ -11,6 +11,7 @@ import conflict from '../utils/conflict'
 import { useState, useEffect } from 'react'
 
 export default function Sudoku ({ sudokuProp }) {
+   console.log(sudokuProp)
     const initial = sudokuProp.puzzle
     const solution = sudokuProp.solution
     const [sudoku, setSudoku] = useState(initial.split("").map((num, index) => ({
@@ -179,8 +180,10 @@ export async function getStaticPaths(req) {
   }while(typeof items.LastEvaluatedKey !== "undefined");
   
   const paths = scanResults.map(sudoku => ({params: {id: sudoku.date}}))
+  console.log('paths: ', paths)
   return {
     paths,
-    fallback: true,
+    fallback: false
+    // fallback: true,
   }
 }
