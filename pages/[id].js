@@ -183,7 +183,7 @@ export async function getStaticPaths(req) {
   console.log('paths: ', paths)
   return {
     paths,
-    fallback: false
+    fallback: "blocking"
     // fallback: true,
   }
 }
