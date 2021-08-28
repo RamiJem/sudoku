@@ -6,15 +6,17 @@ import row from '../utils/row'
 import col from '../utils/col'
 import unit from '../utils/unit'
 import conflict from '../utils/conflict'
+import Calendar from '../components/Calendar'
+import { useRouter } from 'next/router'
 
 
 import { useState, useEffect } from 'react'
 
 export default function Sudoku ({ sudokuProp }) {
-   console.log(sudokuProp)
+    // console.log(sudokuProp)
     const initial = sudokuProp.puzzle
     const solution = sudokuProp.solution
-    const [sudoku, setSudoku] = useState(initial.split("").map((num, index) => ({
+    const [sudoku, setSudoku] = useState(sudokuProp.puzzle.split("").map((num, index) => ({
                                                         "number" : num === '.' ? 0 : parseInt(num),
                                                         "index": index,
                                                         "prefilled": num === '.' ? false : true,
@@ -25,10 +27,13 @@ export default function Sudoku ({ sudokuProp }) {
                                                         "warning": false,
                                                         "candidates": {1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false, 9: false}
     })))
+    // const router = useRouter()
+    
     const [solved, setSolved] = useState(false)
     const [selectedCell, setSelectedCell] = useState(null)
     const [solveActive, setSolveActive] = useState(true)
     const [inputObject, setInputObject] = useState({"cell": null, "input": null})
+    const [realLifeDate, setRealLifeDate] = useState(new Date())
     
     useEffect(() => {
         if(sudoku.reduce((acc, current) => acc + current.number, "") === solution) {
@@ -55,7 +60,6 @@ export default function Sudoku ({ sudokuProp }) {
      }
     
     useEffect(() => {
-        // console.log('handle: ', handle)
         if(!solved){
             if (handle === null) {
                 handle = setInterval(countTimer, 1000);
@@ -69,7 +73,6 @@ export default function Sudoku ({ sudokuProp }) {
 
     useEffect(() => {
         setSudoku(prev => prev.map(sudokuCell => {
-
             if(conflict(prev, sudokuCell.index)) {
                 return {...sudokuCell, "warning": true}
             } else {
@@ -77,6 +80,13 @@ export default function Sudoku ({ sudokuProp }) {
             }
         }))
     }, [inputObject])
+
+    // useEffect(() => {
+    //   setRealLifeDate(new Date())
+    //   setTime({hours: "00", minutes: "00", seconds: "00"})
+    
+    //   console.log('newPage')
+    // }, [router.asPath])
 
     const putNumberInCell = (cell, input) => {
         // Just access using index? No need for find
@@ -126,7 +136,6 @@ export default function Sudoku ({ sudokuProp }) {
                 id="first-post"
                 onKeyDown={onKeyPressed}
                 tabIndex={0}>
- 
                     <SudokuBoard sudoku={sudoku}
                                     setSudoku={setSudoku}
                                     solveActive={solveActive}
@@ -140,6 +149,7 @@ export default function Sudoku ({ sudokuProp }) {
                                 solveActive={solveActive}
                                 setSolveActive={setSolveActive} />
             </div>
+            <Calendar sudokuDate={new Date(sudokuProp.date)} realLifeDate={realLifeDate} />
         </div>
 }
 
@@ -180,7 +190,7 @@ export async function getStaticPaths(req) {
   }while(typeof items.LastEvaluatedKey !== "undefined");
   
   const paths = scanResults.map(sudoku => ({params: {id: sudoku.date}}))
-  console.log('paths: ', paths)
+
   return {
     paths,
     fallback: "blocking"

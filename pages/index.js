@@ -2,30 +2,108 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import db from '../db'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
  
+const monthNameToNumber = {'Jan' : '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
 
+function dateToString (day) {
+  return day.toUTCString().slice(12, 16) + '-' + monthNameToNumber[day.toUTCString().slice(8,11)] + '-' + day.toUTCString().slice(5,7)
+}
+
+function stringToDate (dayString) {
+  const year = dayString.slice(0, 4)
+  const month = parseInt(dayString.slice(5,7)) -1
+  const date = parseInt(dayString.slice(8, 10))
+  return new Date(Date.UTC(year, month, date))
+}
+function DateComponent ({date, done, notAvailable, current}) {
+  if (date.slice(8,10).startsWith('0')) {
+    return <Link href={`/${date}`}><a className={`${styles.date} ${done ? styles.yesDone : styles.notDone} ${notAvailable ? styles.notAvailable : ''} ${current ? styles.activeDate : ''}`}>{date.slice(9,10)}.</a></Link>
+  } else {
+    return <Link href={`/${date}`}><a className={`${styles.date} ${done ? styles.yesDone : styles.notDone} ${notAvailable ? styles.notAvailable : ''} ${current ? styles.activeDate : ''}`}>{date.slice(8,10)}.</a></Link>
+  }
+}
+
+function unpublishedDateComponent ({date}) {
+  if (date.slice(8,10).startsWith('0')) {
+    return <div className={styles.unpublishedDate}>{date.slice(9,10)}.</div>
+  } else {
+    return <div className={styles.unpublishedDate}>{date.slice(8,10)}.</div>
+  }
+}
+function Calendar ({day, children}) {
+  // list of dates in month
+  const dates = calendar(day)
+  const dateCopy = new Date(day)
+  return <>
+        <div style={{width: "90vw", borderBottom: "solid black 1px", padding: "0px", margin: "0px"}}>
+          <h1 style={{marginLeft: "10px", marginBottom: "3px"}}>{day.getUTCFullYear() + ', ' + numberToMonth(day)}</h1>
+        </div>
+        <div className={styles.calendar}>
+        {dates.wholeMonth.map(date => {                  
+                      const available = dates.smallerDaysInMonth.includes(date)
+                      return < DateComponent key={date} current={dateToString(day)==date} date={date} done={true} notAvailable={!available}/>})}
+        </div>
+      </>
+
+}
+
+function numberToMonth(day) {
+  const  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  const number = day.getUTCMonth()
+  return months[number]
+}
+
+function calendar (day) {
+  let dayCopy1 = new Date(day)
+  let dayCopy2 = new Date(day)
+  const monthName = day.toUTCString().slice(8,11)
+  const yearMonth = day.toUTCString().slice(12, 16) + '-' + monthNameToNumber[monthName]
+  const smallerList = []
+  while (dateToString(dayCopy2).includes(yearMonth)) {    
+          const dateString = dateToString(dayCopy2)  
+          // if(dateString !== dateToString(day)) {smallerList.push(dateString)}
+          smallerList.push(dateString)
+          dayCopy2.setUTCDate(dayCopy2.getUTCDate() - 1)
+  }
+ 
+  const wholeMonthList = []
+  while (dateToString(dayCopy1).includes(yearMonth)) {
+    const dateString = dateToString(dayCopy1)  
+    if(dateString !== dateToString(day)) {wholeMonthList.push(dateString)}
+    // wholeMonthList.push(dateString)
+    // Increment day
+    dayCopy1.setUTCDate(dayCopy1.getUTCDate() + 1)
+  }
+
+  wholeMonthList.reverse()
+  wholeMonthList.push(...smallerList)
+  wholeMonthList.reverse()
+  console.log('smaller: ', smallerList, ' whole: ', wholeMonthList)
+  return {'smallerDaysInMonth': smallerList, 'wholeMonth': wholeMonthList}
+
+}
 export default function Home() {
-    // const [sudokus, setSudokus] = useState([])
-    const startDate = new Date(Date.UTC(2021, 0, 1))
-    const endDate = new Date(Date.UTC(2021, 0, 3))
-  
-    let day =  startDate
-    const dateList = []
-    const converter = {'Jan' : '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
-    while(day <= endDate) {
-        const date = day.toUTCString().slice(5,7)
-        const month = converter[day.toUTCString().slice(8,11)]
-        const year = day.toUTCString().slice(12, 16)
-        console.log(year + '-' + month+'-'+date)
-        console.log()
-    
-        dateList.push(year + '-' + month+'-'+date)
-        // Increment day
-        day.setUTCDate(day.getUTCDate() + 1)
-    }
+
+    // const [dates, setDates] = useState([])
+    // useEffect(() => {
+    //   const startDate = new Date(Date.UTC(2021, 0, 1))
+    //   const endDate = new Date(Date.UTC(2021, 0, 20))
+    //   // const endDate = new Date()
+    //   let day =  startDate
+    //   const dateList = []
+     
+    //   while(day <= endDate) {
+    //       const dateString = dateToString(day)  
+    //       dateList.push(dateString)
+    //       // Increment day
+    //       day.setUTCDate(day.getUTCDate() + 1)
+    //   }
+    //   setDates(dateList)
+    // }, [])
   
 
   return (
@@ -35,25 +113,7 @@ export default function Home() {
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main} >
-        {dateList.map(date => <Link key={date} href={`/${date}`}>
-            <a style={{marginBottom: "15px", fontSize: "25px"}}>{date}</a>
-        </Link>)}
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <Calendar day={new Date()}/>
     </div>
   )
 }
@@ -119,3 +179,25 @@ export default function Home() {
 //     </div>
 //   )
 // }
+
+export async function getServerSideProps(context) {
+  const params = {
+    TableName: 'Sudoku',
+    Key: {
+      date: dateToString(new Date(Date.UTC(2021, 0, 1)))
+    }
+  };
+
+  let sudoku
+  try {
+     sudoku = await db.get(params).promise()
+  } catch(err) {
+    console.log(err)
+  }
+ 
+
+  return {
+    props: sudoku.Item
+    // props: {}, // will be passed to the page component as props
+  }
+}

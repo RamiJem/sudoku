@@ -8,7 +8,7 @@ export default function SudokuBoard({ sudoku, solved, setSudoku, solveActive, se
         {sudoku.map((sudokuCell, index) => {
             if(sudokuCell.prefilled) {
                 // parseInt probably unnecessary at this point
-                return <PreFilledCell key={index} number={parseInt(sudokuCell.number)} />
+                return <PreFilledCell key={index} number={parseInt(sudokuCell.number)} aria-label={`Sudoku clue: ${sudokuCell.number}`} />
             } else {
                 if(sudokuCell.normal && sudokuCell.number != 0) {
                     return <Cell
