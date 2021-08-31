@@ -16,25 +16,6 @@
     align-items: center;
     font-size: 4vw;
 }
-
-/* .candidates.focus{
-    outline: none;
-} */
-
-
-/* NEW */
-/* @media(max-width: 700px) {
-
-    .hiddenCandidate {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        color: white;
-     
-    }
-} */
-
 .hiddenCandidate {
     display: flex;
     justify-content: center;
@@ -50,11 +31,6 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     color: black;
-    /* background: white;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 2px;
-    border-color: rgba(0, 0, 0, 0.7); */
 }
 .candidateNumber {
     display: flex;
@@ -62,8 +38,7 @@
     align-items: center;
     align-content: center;
     color: rgb(0, 0, 0);
-    font-size: 2.5vw;
-    /* font-size: 13px; */
+    font-size: 2.7vw;
 }
 .selected {
     background-color: #fff6eb;
@@ -72,17 +47,6 @@
     background: #faaca6cc;
     border-color: rgba(0, 0, 0, 0.7);
 }
-
-/* 
-.cell:focus {
-    cursor: pointer;
-    outline: none;
-}
- */
-/* .warning {
-    background-color: #faaca6cc;
-    border-color: rgba(0, 0, 0, 0.7);
-}  */
 
 @media (min-width: 700px) {
     .cell {
@@ -128,7 +92,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
-        font-size: 12px;
+        font-size: 13px;
         color: black;
         background: white;
         border-style: solid;
@@ -139,7 +103,6 @@
     .candidates:focus {
         outline: none;
     }
-
     .candidateNumber {
         display: flex;
         justify-content: center;
@@ -149,8 +112,8 @@
         font-size: 13px;
     }
     .selected {
-        /* background:\ blue; */
         background: #fff6eb;
+            
     }
     .cell:focus {
         cursor: pointer;

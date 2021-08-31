@@ -5,14 +5,16 @@
     width: max-content;
 
     display: grid;
-    grid-template-columns:  9vw 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw;
-    grid-template-rows: 9vw 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw;
-    grid-gap: 1px;
+    grid-template-columns:  9.5vw 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw;
+    grid-template-rows:     9.5vw 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw;
+    /* grid-template-columns:  9vw 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw;
+    grid-template-rows: 9vw 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw; */
+    grid-gap: 0.4vw;
 
     border-style: solid;
     border-width: 3px;
     border-color: black;
-
+    margin: 0px;
     margin-bottom: 9vw;
 }
 .grid > :nth-child(9n-2) {

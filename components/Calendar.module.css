@@ -1,0 +1,74 @@
+.date {
+    font-size: 20px;
+    /* margin: 30px; */
+    margin: 3vw;
+    /* margin-left: 0; */
+    border-style: solid;
+    border-color: rgb(109, 109, 109);
+    border-width: 2px;
+    border-radius: 10px;
+    width: 15vw;
+    height: 15vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .yesDone {
+    background-color: rgb(188, 255, 218);
+  
+  }
+  .notDone{
+    background-color: rgb(255, 197, 187);
+  }
+  .notAvailable {
+    background-color: rgb(211, 211, 211);
+    color: black;
+    border-color: grey;
+  }
+  .notAvailable:hover {
+    cursor: default;
+    background-color: rgb(228, 228, 228);
+    color: grey;
+    border-color: grey;
+  }
+  .activeDate {
+    border-width: 4px;
+  }
+  
+  .unpublishedDate {
+    font-size: 20px;
+    margin: 55px;
+    border-style: solid;
+    border-color: rgb(109, 109, 109);
+    border-width: 2px;
+    border-radius: 10px;
+    width: 15vw;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(211, 211, 211);
+  
+  }
+  .calendar {
+    margin-top: 20px;
+    margin-left: 5vw;
+    display: flex;
+    width: 90vw;
+    flex-direction: row;
+  
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  @media (max-width: 600px) {
+    .grid {
+      width: 100%;
+      flex-direction: column;
+    }
+    .date {
+      width: 19vw;
+      height: 19vw;
+    }
+  }

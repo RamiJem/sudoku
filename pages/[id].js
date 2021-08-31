@@ -7,7 +7,8 @@ import col from '../utils/col'
 import unit from '../utils/unit'
 import conflict from '../utils/conflict'
 import Calendar from '../components/Calendar'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 
 import { useState, useEffect } from 'react'
@@ -128,8 +129,55 @@ export default function Sudoku ({ sudokuProp }) {
         }
     }
 
+    const checkCell = () => {
+        // Put selection back to selected cell. Now goes to button after clicking.
+        setSudoku(prev => prev.map((sudokuCell, index) => {
+            if(index === selectedCell) {
+                if (sudoku[selectedCell].number === parseInt(solution[selectedCell])) {
+                    return {...sudokuCell, "warning": false}
+                } else {
+                    return {...sudokuCell, "warning": true}
+                }
+            } else {
+                return {...sudokuCell, "warning": false}
+            }
+        }))
+    }
+    const checkAllCells = () => {
+        // Put selection back to selected cell. Now goes to button after clicking.
+        setSudoku(prev => prev.map((sudokuCell, index) => {
+            if(sudokuCell.number !== 0) {
+                if (sudokuCell.number === parseInt(solution[index])) {             
+                    return {...sudokuCell, "warning": false}
+                } else {
+                    // console.log('warning: ', sudokuCell.number, )
+                    return {...sudokuCell, "warning": true}
+                }
+            } else {
+                return {...sudokuCell, "warning": false}
+            }
+        }))
+    }
+
     return <div>
         {/* <div className={styles.timeAndSettings}> */}
+        <Head>
+          <title>Daily sudoku: {sudokuProp.date}</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+          <meta name="description" content="A daily sudoku puzzle. You'll also find an archive of older sudoku puzzles going back to January 1, 2021."/>
+        </Head>
+        <div className={styles.help}> 
+            Check: 
+            <button className={styles.checkButton}
+                    onClick={checkCell}>
+               Selected Cell
+            </button>
+            <button className={styles.checkButton}
+                    onClick={checkAllCells}>
+                All Cells
+            </button>
+        </div>
         <div className={styles.timeAndSettings}>{time.hours + ':' + time.minutes +':' + time.seconds}</div >
         <h1>{handle}</h1>
             <div className={styles.layout}
