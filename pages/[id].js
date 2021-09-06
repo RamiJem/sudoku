@@ -258,9 +258,8 @@ export default function Sudoku ({ sudokuProp }) {
             </button>
         </div>
         <div className={styles.timeAndSettings}>
-            {time.hours + ':' + time.minutes +':' + time.seconds} &nbsp;
-         
-               {!paused ? <Image onClick={pausePlay} className={styles.pausePlay} src="pause.svg" alt="pause" /> : <Image onClick={pausePlay} className={styles.pausePlay} src="play.svg" alt="play" />}
+            <div style={{paddingTop: "3px"}}>{time.hours + ':' + time.minutes +':' + time.seconds} &nbsp;</div>
+            {!paused ? <Image width="20px" height="20px" style={{marginBottom: "15px"}}  onClick={pausePlay} className={styles.pausePlay} src="/pause.svg" alt="pause" /> : <Image width="20px" height="20px" onClick={pausePlay} className={styles.pausePlay} src="/play.svg" alt="play" />}
           
         </div >
             <div className={styles.layout}
