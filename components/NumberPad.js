@@ -1,6 +1,6 @@
 import styles from './NumberPad.module.css'
 
-export default function NumberPad({ selectedCell, setInputObject,
+export default function NumberPad({ selectedCell, setInputObject, dateProp,
                                     setSudoku, sudoku, solveActive, setSolveActive}) {
     return <div>
                 <div className={styles.solveAndCandidate}>
@@ -37,6 +37,7 @@ export default function NumberPad({ selectedCell, setInputObject,
                                                 className={styles.number}
                                                 onClick={() => {
                                                     if(sudoku[selectedCell].normal) {
+                                                        sessionStorage.setItem(`${dateProp}-${selectedCell}`, number)
                                                         setInputObject({'cell': selectedCell, 'input': parseInt(number)})
                                                         const newSudoku = sudoku.map(sudokuObject => {
                                                             if(sudokuObject.index === selectedCell) {

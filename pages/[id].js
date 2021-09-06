@@ -61,6 +61,7 @@ export default function Sudoku ({ sudokuProp }) {
         )
         
     }, [])
+    
     useEffect(() => {
         if(sudoku.reduce((acc, current) => acc + current.number, "") === solution) {
             setSelectedCell(null)
@@ -274,6 +275,7 @@ export default function Sudoku ({ sudokuProp }) {
                                     setSelectedCell={setSelectedCell} />}
                     {paused && <div className={styles.blackBox}></div>}
                     <NumberPad   sudoku={sudoku}
+                                dateProp={sudokuProp.date}
                                 setInputObject={setInputObject}
                                 setSudoku={setSudoku}
                                 selectedCell={selectedCell}
