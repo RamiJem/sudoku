@@ -9,12 +9,15 @@ import conflict from '../utils/conflict'
 import Calendar from '../components/Calendar'
 // import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Image from 'next/image'
 
 
 import { useState, useEffect } from 'react'
+let totalSeconds = 0
 
 export default function Sudoku ({ sudokuProp }) {
-    // console.log(sudokuProp)
+ 
+   
     const initial = sudokuProp.puzzle
     const solution = sudokuProp.solution
     const [sudoku, setSudoku] = useState(sudokuProp.puzzle.split("").map((num, index) => ({
@@ -35,42 +38,113 @@ export default function Sudoku ({ sudokuProp }) {
     const [solveActive, setSolveActive] = useState(true)
     const [inputObject, setInputObject] = useState({"cell": null, "input": null})
     const [realLifeDate, setRealLifeDate] = useState(new Date())
-    
+    const [paused, setPaused] = useState(false)
+
+    // Remember sudoku cells from previous session (local storage)
+    // Check for conflict again
+    useEffect(() => {
+        [...Array(81).keys()].forEach(
+            el => {
+                const dateAndIndex = sudokuProp.date + '-' + el
+                if(sessionStorage.getItem(dateAndIndex)) {
+                    // console.log('index : ', el, ' exists in localStorage. Value: ', localStorage.getItem(el))
+                   
+                    // Check for conflict again
+                    setSudoku(sudokuObject => sudokuObject.map(sudokuCell => {
+                        if (sudokuCell.index === el) {
+                            return {...sudokuCell, number: sessionStorage.getItem(dateAndIndex)}
+                        } else {
+                            return sudokuCell
+                        }
+                    }))
+            }}
+        )
+        
+    }, [])
     useEffect(() => {
         if(sudoku.reduce((acc, current) => acc + current.number, "") === solution) {
             setSelectedCell(null)
             setSolved(true)
+            localStorage.setItem(sudokuProp.date, true)
         }  
+
     }, [sudoku])
-   
+    
     const [time, setTime] = useState({hours: "00", minutes: "00", seconds: "00"})
+    useEffect(() => {
+            var totalSeconds = sessionStorage.getItem(`${sudokuProp.date}-time`) ? sessionStorage.getItem(`${sudokuProp.date}-time`)  : 0
+            var hour = Math.floor(totalSeconds /3600);
+            var minute = Math.floor((totalSeconds - hour*3600)/60);
+            var second = totalSeconds - (hour*3600 + minute*60);
+        setTime( {hours: hour, minutes: minute, seconds: second})
+    }, [])
     let handle = null
-    var totalSeconds = 0;
-    function countTimer() {
-        ++totalSeconds;
-        var hour = Math.floor(totalSeconds /3600);
-        var minute = Math.floor((totalSeconds - hour*3600)/60);
-        var second = totalSeconds - (hour*3600 + minute*60);
-        if(hour < 10)
-            hour = "0"+hour;
-        if(minute < 10)
-            minute = "0"+minute;
-        if(second < 10)
-            second = "0"+second;
-        setTime({hours: hour, minutes: minute, seconds: second})    
+    
+    // const [totalSeconds, setTotalSeconds] = useState({time: 0})
+    const countTimer = (number) => () => {
+        // totalSeconds = number
+      
+        totalSeconds = parseInt(sessionStorage.getItem(`${sudokuProp.date}-time`)) || 0
+       
+      
+      
+        if(!paused) {    
+            // setTotalSeconds(prev => ({time: prev + 1}))
+            // ++totalSeconds
+            totalSeconds = totalSeconds + 1
+          
+            var hour = Math.floor(totalSeconds /3600);
+            var minute = Math.floor((totalSeconds - hour*3600)/60);
+            var second = totalSeconds - (hour*3600 + minute*60);
+            if(hour < 10)
+                hour = "0"+hour;
+            if(minute < 10)
+                minute = "0"+minute;
+            if(second < 10)
+                second = "0"+second;
+            sessionStorage.setItem(`${sudokuProp.date}-time`, totalSeconds)
+            setTime({hours: hour, minutes: minute, seconds: second})    
+        }
      }
+    // const countTimer = (number) => () => {
+    //     // totalSeconds = number
+    //     console.log('getting called')
+    //     console.log(totalSeconds)
+        
+    //     if(paused) {
+    //         console.log('paused, time: ', totalSeconds)
+    //     }
+    //     if(!paused) {
+    //         console.log('not paused, time: ', totalSeconds)
+    //         // setTotalSeconds(prev => ({time: prev + 1}))
+    //         // ++totalSeconds
+    //         totalSeconds = totalSeconds + 1
+    //         console.log('totalSeconds: ', totalSeconds)
+    //         var hour = Math.floor(totalSeconds /3600);
+    //         var minute = Math.floor((totalSeconds - hour*3600)/60);
+    //         var second = totalSeconds - (hour*3600 + minute*60);
+    //         if(hour < 10)
+    //             hour = "0"+hour;
+    //         if(minute < 10)
+    //             minute = "0"+minute;
+    //         if(second < 10)
+    //             second = "0"+second;
+    //         setTime({hours: hour, minutes: minute, seconds: second})    
+    //     }
+    //  }
     
     useEffect(() => {
         if(!solved){
             if (handle === null) {
-                handle = setInterval(countTimer, 1000);
+                console.log('coming to setInterval')
+                handle = setInterval(countTimer(sessionStorage.getItem(`${sudokuProp.date}-time`) || totalSeconds), 1000);
             } 
         }
         if(solved) {
             clearInterval(handle)
         }
         return () => clearInterval(handle);
-    }, [solved])
+    }, [solved, paused])
 
     useEffect(() => {
         setSudoku(prev => prev.map(sudokuCell => {
@@ -93,6 +167,7 @@ export default function Sudoku ({ sudokuProp }) {
         // Just access using index? No need for find
         const normalMode = sudoku.find(sudokuCell => sudokuCell.index == cell).normal
         if(normalMode) {
+            sessionStorage.setItem(`${sudokuProp.date}-${cell}`, input)
             setInputObject({'cell': cell, 'input': input})
             setSudoku(prev => prev.map(sudokuCell => {
                 if(sudokuCell.index == cell) {
@@ -150,7 +225,7 @@ export default function Sudoku ({ sudokuProp }) {
                 if (sudokuCell.number === parseInt(solution[index])) {             
                     return {...sudokuCell, "warning": false}
                 } else {
-                    // console.log('warning: ', sudokuCell.number, )
+                  
                     return {...sudokuCell, "warning": true}
                 }
             } else {
@@ -159,8 +234,12 @@ export default function Sudoku ({ sudokuProp }) {
         }))
     }
 
+    const pausePlay = () => {
+        setPaused(prev => !prev)
+    }
+ 
     return <div>
-        {/* <div className={styles.timeAndSettings}> */}
+  
         <Head>
           <title>Daily sudoku: {sudokuProp.date}</title>
           <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -178,18 +257,23 @@ export default function Sudoku ({ sudokuProp }) {
                 All Cells
             </button>
         </div>
-        <div className={styles.timeAndSettings}>{time.hours + ':' + time.minutes +':' + time.seconds}</div >
-        <h1>{handle}</h1>
+        <div className={styles.timeAndSettings}>
+            {time.hours + ':' + time.minutes +':' + time.seconds} &nbsp;
+         
+               {!paused ? <Image onClick={pausePlay} className={styles.pausePlay} src="pause.svg" alt="pause" /> : <Image onClick={pausePlay} className={styles.pausePlay} src="play.svg" alt="play" />}
+          
+        </div >
             <div className={styles.layout}
                 id="first-post"
                 onKeyDown={onKeyPressed}
                 tabIndex={0}>
-                    <SudokuBoard sudoku={sudoku}
+                   {!paused && <SudokuBoard sudoku={sudoku}
                                     setSudoku={setSudoku}
                                     solveActive={solveActive}
                                     solved={solved}
                                     selectedCell={selectedCell}
-                                    setSelectedCell={setSelectedCell} />
+                                    setSelectedCell={setSelectedCell} />}
+                    {paused && <div className={styles.blackBox}></div>}
                     <NumberPad   sudoku={sudoku}
                                 setInputObject={setInputObject}
                                 setSudoku={setSudoku}

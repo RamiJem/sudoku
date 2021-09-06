@@ -8,16 +8,19 @@
 .timeAndSettings {
     width: 100%;
     align-items: center;
+    justify-content: center;
     margin-top: 1em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.5em;
 }
-
 .help {
+    margin-left: 5vw;
+    margin-right: 5vw;
+    width: 90vw;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -25,22 +28,61 @@
     padding-right: 5vw;
     background-color: white;
     border-bottom: solid 1px black;
-    height: 9vw;
+    height: 5rem;
+    font-size: 1.5rem;
 }
 
 .checkButton {
     background-color: white;
+    font-size: 1.5rem;
     border-radius: 3px;
     margin-left: 1vw;
 }
 
+.pausePlay {
+    background-color: white;
+    margin-top: 0;
+    height: 1.4rem;
+    padding-bottom: 3px;
+}
+
+/* .blackBox {
+    width: 91vw;
+    height: 91vw;
+    background-color: black;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    margin: 0px;
+    margin-bottom: 9vw;
+} */
+.blackBox {
+    --separator: 2px;
+    background-color: rgb(59, 58, 58);
+    box-sizing: content-box;
+    width: max-content;
+    background-color: black;
+
+    display: grid;
+    grid-template-columns:  9.5vw 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw;
+    grid-template-rows:     9.5vw 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw calc(9.5vw + var(--separator)) 9.5vw 9.5vw;
+    /* grid-template-columns:  9vw 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw;
+    grid-template-rows: 9vw 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw calc(9vw + var(--separator)) 9vw 9vw; */
+    grid-gap: 0.4vw;
+
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    margin: 0px;
+    margin-bottom: 9vw;
+}
 @media (min-width: 700px) {
     .timeAndSettings {
         width: 100%;
         align-items: center;
-        padding-top: 3em;
+        padding-top: 1em;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         font-family: 'Courier New', Courier, monospace;
         font-size: 1.5em;
     }
@@ -50,5 +92,26 @@
         align-items: center;
         justify-content: space-evenly;
         outline: none;
+    }
+    .help {
+        padding-right: 5vw;
+        background-color: white;
+        border-bottom: solid 1px black;
+        /* height: 5vw; */
+    }
+    .blackBox {
+        display: flex;
+        /* box-sizing: content-box;
+        width: max-content; */
+        grid-gap: 0;
+        background-color: black;
+        width: 454px;
+        height: 454px;
+        /* height: 478px; */
+        justify-content: center;
+        align-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 2px;
     }
 }
